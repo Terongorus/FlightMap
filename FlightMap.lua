@@ -1,3 +1,65 @@
+local function _OptionsFrame_GetCheckBoxTextRegion(checkBox) if checkBox.Text then
+        return checkBox.Text
+    end
+
+    local name = checkBox.GetName and checkBox:GetName()
+    if name then
+        local textRegion = _G[name .. "Text"]
+        if textRegion then
+            return textRegion
+        end
+    end
+    return nil
+end
+
+function OptionsFrame_EnableCheckBox(checkBox, show, checked)
+    if not checkBox then return end
+
+    -- Някои Blizzard UI-та държат disabled флаг отделно
+    checkBox.disabled = nil
+
+    if show then
+        checkBox:Show()
+    end
+
+    checkBox:Enable()
+
+    -- Връщаме нормален цвят на текста (класически "HIGHLIGHT_FONT_COLOR")
+    local text = _OptionsFrame_GetCheckBoxTextRegion(checkBox)
+    if text then
+        text:SetTextColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b)
+    end
+
+    -- Задаваме отметката според подаденото
+    if checked ~= nil then
+        local isChecked =
+            (checked == true) or
+            (checked == 1) or
+            (checked == "1")
+
+        checkBox:SetChecked(isChecked)
+    end
+end
+
+-- Възпроизвежда поведението на стандартната OptionsFrame_DisableCheckBox
+-- По подразбиране: деактивира и "грейва" текста. (Опционално чисти отметката.)
+function OptionsFrame_DisableCheckBox(checkBox)
+    if not checkBox then return end
+
+    checkBox.disabled = 1
+    checkBox:Disable()
+
+    -- Класическият OptionsFrame обикновено греѝва етикета
+    local text = _OptionsFrame_GetCheckBoxTextRegion(checkBox)
+    if text then
+        text:SetTextColor(GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b)
+    end
+
+    -- В класическия UI често се оставя последната стойност,
+    -- но ако искаш 1:1 поведение за много панели, може да се чисти:
+    -- checkBox:SetChecked(false)
+end
+
 --
 -- FlightMap - AddOn to show inbound and outbound flightpaths from a given
 --             zone on the World Map.  Additionally shows flight costs and
