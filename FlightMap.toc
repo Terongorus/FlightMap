@@ -1,5 +1,7 @@
 ## Interface: 11200
-## Title: Dhask's FlightMap v1.12-1
+## Title: Teron's Flight Map
+## Author: Dhask, Teron
+## Version: 1.1.3
 ## Notes: Adds a tooltip to the world map showing flightpaths into and out of regions, and region level ranges.
 ## SavedVariables: FlightMap
 ## OptionalDeps: myAddOns, Sea
